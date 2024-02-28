@@ -1,0 +1,46 @@
+
+<div class="layout">
+    <div class="main">
+        <div class="sections">
+            <div class="section">
+                <% data.forEach(function(item) { %>
+                    <div class="card">
+                        <div class="article">
+                            <h2><%= item.title %></h2>
+                            <div class="btn-sosmed">Edit</div>
+                            <p><%= item.content %></p>
+                            <p>Status: <%= item.status %></p>
+                            <div class="btn-sosmed">Post Facebook</div>
+                            <div class="btn-sosmed">Post Instagram</div>
+                            <div class="btn-sosmed">Post Tiktok</div>
+                            
+                        </div>
+                        <div class="article">
+
+                            <% if(item.image_urls !== ""){
+                                var imgs = item.image_urls + "";    
+                             %>
+                             <% var images = imgs.split('|'); %>
+                             <% images.forEach(function(imageUrl) { %>
+                                 <img src="uploads/<%= imageUrl %>" alt="Image" style="width: 100px;">
+                             <% }); %>
+                             <%}%>
+                 
+                             <% if(item.video_urls !== ""){
+                                 var vids = item.video_urls + ""; 
+                             %>
+                             <% var videos = vids.split('|'); %>
+                             <% videos.forEach(function(videoUrl) { %>
+                                 <video width="320" height="240" controls>
+                                     <source src="uploads/<%= videoUrl %>" type="video/mp4">
+                                     Your browser does not support the video tag.
+                                 </video>
+                             <% }); %>
+                             <%}%>
+                        </div>
+                    </div>
+                <% }); %>
+            </div>
+        </div>
+    </div>
+</div>

@@ -1,0 +1,80 @@
+
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+
+<form name="create" id="create" class="form-container">
+    <div class="form-group">
+        <label for="title">Title</label>
+        <input type="text" id="title" name="title" required>
+    </div>
+    <div class="form-group">
+        <label for="content">Content</label>
+        <textarea id="content" name="content" rows="4" required></textarea>
+    </div><!-- Previous form groups -->
+    <div class="form-group">
+        <label for="images">Upload Images</label>
+        <input type="file" id="images" name="images" accept="image/*" multiple onchange="previewImages()">
+    </div>
+    <!-- Container for thumbnails -->
+    <div class="thumbnails" id="thumbnails"></div>
+    <div class="form-group">
+        <label for="video">Upload Video</label>
+        <input type="file" id="video" name="video" accept="video/*">
+    </div>
+    <div class="form-group">
+        <button type="submit">Submit</button>
+    </div>
+</form>
+
+<script>
+function previewImages() {
+var previewContainer = document.getElementById('thumbnails');
+previewContainer.innerHTML = ''; // Clear existing thumbnails
+var files = document.getElementById('images').files;
+
+for (var i = 0; i < files.length; i++) {
+    var file = files[i];
+
+    if (file.type.startsWith('image/')) {
+        var reader = new FileReader();
+
+        reader.onload = function(e) {
+            var imgElement = document.createElement('img');
+            imgElement.src = e.target.result;
+            var thumbnailDiv = document.createElement('div');
+            thumbnailDiv.classList.add('thumbnail');
+            thumbnailDiv.appendChild(imgElement);
+            previewContainer.appendChild(thumbnailDiv);
+        };
+
+        reader.readAsDataURL(file);
+    }
+}
+}
+</script>
+
+<script>
+    $(document).ready(function(){
+      $('#create').on('submit', function(e){
+        e.preventDefault(); // Prevent the default form submission
+        
+        var formData = new FormData(this); // Create a FormData object passing the form
+        
+        console.log('formData', formData); 
+
+        $.ajax({
+          url: '/create', // The endpoint where you're submitting the form
+          type: 'POST',
+          data: formData,
+          processData: false, // Prevent jQuery from processing the data
+          contentType: false, // Prevent jQuery from setting the Content-Type header
+          success: function(data){
+            console.log(data);
+          },
+          error: function(xhr, status, error){
+            console.error(error);
+          }
+        });
+      });
+    });
+    </script>
+    
