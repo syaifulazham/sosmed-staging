@@ -11,6 +11,7 @@ const auth = function(){
         },
         sosmed:{
           fb: process.env.FB_ACCESS_TOKEN,
+          fbid: process.env.FB_PAGE_ID,
           insta: process.env.INSTA_ACCESS_TOKEN,
           tiktok: process.env.TIKTOK_ACCESS_TOKEN
         }

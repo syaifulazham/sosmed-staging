@@ -1,3 +1,4 @@
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
 
 <div class="layout">
     <div class="main">
@@ -10,7 +11,7 @@
                             <div class="btn-sosmed">Edit</div>
                             <p><%= item.content %></p>
                             <p>Status: <%= item.status %></p>
-                            <div class="btn-sosmed">Post Facebook</div>
+                            <div class="btn-sosmed btn-fb" postid="<%=item.id%>">Post Facebook</div>
                             <div class="btn-sosmed">Post Instagram</div>
                             <div class="btn-sosmed">Post Tiktok</div>
                             
@@ -44,3 +45,33 @@
         </div>
     </div>
 </div>
+
+
+<script>
+    $(document).ready(function(){
+      $('.btn-fb').on('click', function(e){
+        //e.preventDefault(); // Prevent the default form submission
+        //console.log($(e.target).attr('postid'));
+        postid = $(e.target).attr('postid');
+        
+        var formData = { postid : postid}; // Create a FormData object passing the form
+        
+        console.log('formData', formData); 
+
+        $.ajax({
+          url: '/postfb', // The endpoint where you're submitting the form
+          type: 'POST',
+          data: formData,
+          dataType: 'json',
+          success: function(data){
+            console.log(data);
+          },
+          error: function(xhr, status, error){
+            console.error(error);
+          }
+        });
+      });
+      
+    });
+    </script>
+    
