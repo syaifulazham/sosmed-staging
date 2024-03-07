@@ -13,6 +13,7 @@
     --text-header: #86A5D9;
     --gold: #a9b67a; /*a9b67a*/
     --menu-height: 50px;
+    --menu-sosmed-height: 24px;
 }
 
 body {
@@ -100,6 +101,16 @@ body {
     z-index: 9999999;
 }
 
+.column-sosmed-container{
+    display: flex;
+    flex-direction: row;
+    min-height: var(--menu-sosmed-height);
+    max-height: var(--menu-sosmed-height);
+    background: var(--bg-gradient);
+    position: relative;
+    z-index: 9999999;
+}
+
 .f-row-left{
     display: flex;
     flex-direction: row;
@@ -142,6 +153,25 @@ body {
     justify-content: center;
     font-size: small;
     text-align: center;
+}
+
+.btn-sosmed{
+    background: var(--bg-gradient);
+    height: var(--menu-sosmed-height);
+    min-width: 50px;
+    border-left: 1px solid var(--secondary-color);
+    border-right: 1px solid var(--secondary-color);
+    color: var(--text-light);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: small;
+    text-align: center;
+}
+
+.btn-sosmed:hover{
+    background: green;
+    cursor: pointer;
 }
 
 .brand-container{
@@ -187,7 +217,9 @@ body {
 
 .layout>.main>.sections>.section{
     display: flex;
-    flex-wrap: wrap;
+    flex: 1;
+    flex-flow: row wrap;
+    align-content:flex-start;
 }
 
 .layout>.secondary{
@@ -195,6 +227,17 @@ body {
     flex-direction: column;
     flex:1;
     height: 100vh;
+}
+
+.card-frame{
+    display: flex;
+    flex-direction: column;
+    background-color: var(--bg-card);
+    flex:1;
+    min-height: 300px;
+    margin: 10px;
+    border-radius: 6px;
+    max-width: 300px;
 }
 
 .card{
@@ -244,21 +287,4 @@ body {
 a {
     text-decoration: none;
     color: var(--text-light);
-}
-
-.btn-sosmed{
-    padding: 5px;
-    align-items: center;
-    justify-content:center;
-    border: #fff 1px solid;
-    border-radius: 6px;
-    background: var(--bg-gradient);
-    font-size: smaller;
-    color: var(--text-light);
-    margin-bottom: 2px;
-}
-
-.btn-sosmed:hover{
-    background: green;
-    cursor: pointer;
 }

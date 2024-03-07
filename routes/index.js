@@ -4,6 +4,7 @@ const fs = require('fs');
 const path = require('path');
 const crud = require('./crud_mysql');
 const auth = require('./auth');
+const axios = require('axios');
 
 var router = express.Router();
 const bodyParser = require('body-parser');
@@ -11,6 +12,7 @@ const bodyParser = require('body-parser');
 const sosmed = auth.auth()['sosmed']
 
 router.use(bodyParser.json());
+router.use(bodyParser.urlencoded({ extended: true }));
 
 // Ensure the uploads directory exists
 const uploadDir = './public/uploads';
@@ -85,31 +87,32 @@ router.post('/create', upload.fields([{ name: 'images', maxCount: 10 }, { name: 
 });
 
 router.post('/postfb', async (req, res) => {
+
     const postid = req.body.postid;
     const data = await crud.posts.post(postid);
 
-    console.log('data---------------->>>',req.body, data);
     const pageAccessToken = sosmed.fb; // Use the token obtained in Step 2
-        const pageId = sosmed.fbid;
-        const url = `https://graph.facebook.com/${pageId}/feed`;
-    
-        //const imageUrl = 'YOUR_IMAGE_URL';
-      
-        try {
-          const response = await axios.post(url, {
+    const pageId = sosmed.fbid;
+    const url = `https://graph.facebook.com/${pageId}/feed`;
+
+    //const imageUrl = 'YOUR_IMAGE_URL';
+
+    try {
+        const response = await axios.post(url, {
             message: data[0].content,
             //url: imageUrl,
             published: false,
-          }, {
+        }, {
             params: {
-              access_token: pageAccessToken,
+                access_token: pageAccessToken,
             },
-          });
-          res.send({ success: true, postId: response.data.id });
-        } catch (error) {
-          console.error('Error posting to Facebook:', error.response.data);
-          res.status(500).send({ success: false, error: error.response.data });
-        }
-  });
+        });
+        res.send({ success: true, postId: response.data.id });
+    } catch (error) {
+        console.error('Error posting to Facebook:', error.response.data);
+        res.status(500).send({ success: false });
+    }
+
+});
 
 module.exports = router;

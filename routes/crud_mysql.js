@@ -24,21 +24,21 @@ let API = {
             }
         },
         post: async (id) => {
-            var con = mysql.createConnection(auth.auth()[__DATA__SCHEMA__]);
-            console.log('ID----->', id);
+            const con = mysql.createConnection(auth.auth()[__DATA__SCHEMA__]);
+            // Convert the query function to return a promise
+            const query = util.promisify(con.query).bind(con);
+            
             try {
-                con.query("SELECT * FROM sosmed_posts where id = ?", [id],function (err, result) {
-                    if (err) {
-                        console.log('but with some error: ',err);
-                    } else {
-                        console.log('... with some data: ',result);
-                        con.end();
-                        
-                        return result;
-                    }
-                });
-            } catch (e) {
-                console.log(e);
+                console.log('ID----->', id);
+                // Await the promise returned by the query
+                const result = await query("SELECT * FROM sosmed_posts WHERE id = ?", [id]);
+                console.log('... with some data: ', result);
+                return result;
+            } catch (err) {
+                console.log('Error:', err);
+                throw err; // Rethrow the error if you want the caller to handle it
+            } finally {
+                con.end(); // Ensure connection is closed even if there's an error
             }
         },
         create: (title, contents, images, video, post_status, fn) => {
